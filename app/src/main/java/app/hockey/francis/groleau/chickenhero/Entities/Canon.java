@@ -105,6 +105,17 @@ public class Canon {
                 _currentDirection = 1;
         }
 
+        List<Projectile> projectilesToRemove = new ArrayList<Projectile>();
+        for(Projectile p : _projectiles)
+        {
+            if(p.get_x() > AppConstants.SCREEN_WIDTH || p.get_x() < 0 ||
+               p.get_y() > AppConstants.SCREEN_HEIGHT || p.get_y() < 0)
+            {
+                projectilesToRemove.add(p);
+            }
+        }
+        RemoveProjectile(projectilesToRemove);
+
         for(Projectile p : _projectiles)
         {
             p.Update();

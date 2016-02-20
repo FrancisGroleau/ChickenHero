@@ -6,6 +6,8 @@ import android.graphics.Rect;
 
 import java.util.Random;
 
+import app.hockey.francis.groleau.chickenhero.Main.AppConstants;
+
 /**
  * Created by francis on 2016-02-13.
  */
@@ -28,6 +30,10 @@ public class Chicken {
     private double _amplitude;
     private double _frequency;
 
+    private long _pokTime;
+    private int _pokX;
+    private int _pokY;
+
     public Chicken(Bitmap pSprite, int pFrameCount, int pVelocityX, int pVelocityY, int pX, int pY)
     {
         _sprite = pSprite;
@@ -37,6 +43,7 @@ public class Chicken {
         _velocityY = pVelocityY;
         _x = pX;
         _y = pY;
+
 
         _currentFrame = 0;
         _frameNumber = pFrameCount;
@@ -143,17 +150,26 @@ public class Chicken {
 
 
 
-    public void Draw(Canvas pCanvas)
+    public void Draw(Canvas pCanvas, long pGameTime)
     {
         Rect destRect = new Rect(_x, _y, _x + _width, _y + _height);
         pCanvas.drawBitmap(_sprite, _sourceRect, destRect, null);
+
+
+        if(_pokTime != 0 && pGameTime < _pokTime + 1000)
+        {
+            pCanvas.drawBitmap(AppConstants.GetBitmapsBank().get_pok(),_pokX,_pokY,null);
+        }
     }
 
 
-    public void Kill()
+    public void Kill(long pGameTime)
     {
-        _x = -_width;
+        _pokTime = pGameTime;
+        _pokX = _x;
+        _pokY = _y;
+
+        //we replace the chicken to the left of the screen
+        _x = - (_width + (int)(Math.random() * 200));
     }
-
-
 }

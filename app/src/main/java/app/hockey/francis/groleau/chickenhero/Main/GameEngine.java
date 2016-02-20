@@ -71,6 +71,7 @@ public class GameEngine {
 
         UpdateChickens(pCanvas);
         _canon.Update(time);
+        CheckForDeadChickens(time);
     }
 
 
@@ -82,17 +83,22 @@ public class GameEngine {
         }
     }
 
-    private void CheckForDeadChickens()
+    private void CheckForDeadChickens(long pGameTime)
     {
+        List<Projectile> projectilesToRemove = new ArrayList<Projectile>();
+
         for(Projectile p : _canon.get_projectiles()) {
             for (Chicken c : _chickens) {
                 if(((p.get_x() > c.get_x()) && (p.get_x() < (c.get_x() + c.get_width()))) &&
                     (p.get_y() > c.get_y()) && (p.get_y() < (c.get_y() + c.get_height())))
                 {
-                    c.Kill();
+                    c.Kill(pGameTime);
+                    projectilesToRemove.add(p);
                 }
             }
         }
+
+        _canon.RemoveProjectile(projectilesToRemove);
     }
 
     public void Draw(Canvas pCanvas)
@@ -113,7 +119,7 @@ public class GameEngine {
         for (Chicken c : _chickens)
         {
             c.UpdateAnimation(pTime);
-            c.Draw(pCanvas);
+            c.Draw(pCanvas, System.currentTimeMillis());
         }
     }
 

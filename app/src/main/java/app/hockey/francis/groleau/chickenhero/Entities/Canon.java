@@ -155,6 +155,16 @@ public class Canon {
         return new ArrayList<Projectile>(_projectiles);
     }
 
+    public void RemoveProjectile(List<Projectile> pProjectile)
+    {
+        for(Projectile p : pProjectile)
+        {
+            if(_projectiles.indexOf(p) > 0 && _projectiles.get(_projectiles.indexOf(p)) != null)
+            {
+                _projectiles.remove(_projectiles.get(_projectiles.indexOf(p)));
+            }
+        }
+    }
 
 
 
